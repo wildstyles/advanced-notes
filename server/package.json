@@ -1,0 +1,30 @@
+{
+  "name": "advanced-notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wildstyles/advanced-notes.git"
+  },
+  "author": "wildstyles",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wildstyles/advanced-notes/issues"
+  },
+  "homepage": "https://github.com/wildstyles/advanced-notes#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "lodash.pick": "^4.4.0",
+    "mongoose": "^4.13.7",
+    "morgan": "^1.9.0"
+  }
+}
