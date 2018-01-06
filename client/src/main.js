@@ -4,9 +4,12 @@ import Vue from 'vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+import Panel from '@/components/globals/Panel'
 
 import App from './App'
 import router from './router'
+
+Vue.component('panel', Panel)
 
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',
