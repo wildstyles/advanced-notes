@@ -17,14 +17,14 @@
                         <div class="danger-alert" v-html="error"/>
                     </form>
                     <br>
-                    <v-btn class="info" dark>Register</v-btn>
+                    <v-btn class="info" dark @click="login">Signin</v-btn>
             </panel>
         </v-flex>
     </v-layout>
 </template>
 
 <script>
-//   import AuthenticationService from '@/services/AuthenticationService'
+  import AuthenticationService from '@/services/AuthenticationService'
   export default {
     data () {
       return {
@@ -32,21 +32,23 @@
         password: '',
         error: null
       }
+    },
+    methods: {
+      async login () {
+        try {
+          const response = await AuthenticationService.signin({
+            email: this.email,
+            password: this.password
+          })
+          console.log(response.data)
+          this.$store.dispatch('setToken', response.data.token)
+          this.$store.dispatch('setUser', response.data.user)
+          this.$router.push('/profile')
+        } catch (error) {
+        this.error = error.response.data.error
+        console.log(error)
+        }
+      }
     }
-    // methods: {
-    //   async register () {
-    //     try {
-    //       const response = await AuthenticationService.register({
-    //         email: this.email,
-    //         password: this.password
-    //       })
-    //       this.$store.dispatch('setToken', response.data.token)
-    //       this.$store.dispatch('setUser', response.data.user)
-    //       this.$router.push('/songs')
-    //     } catch (error) {
-    //       this.error = error.response.data.error
-    //     }
-    //   }
-    // }
   }
 </script>

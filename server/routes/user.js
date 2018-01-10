@@ -37,9 +37,10 @@ router.post('/signup', async(req, res) => {
             _id: id,
             email: req.body.email,
             password: hash
-        });
-        res.header('Authentication', `bearer ${token}`).status(201).json({
-            user: await newUser.save().select('-__v'),
+        })
+        newUser.save();
+        return res.header('Authentication', `bearer ${token}`).status(201).json({
+            user: newUser,
             token
         });
     } catch (e) {
