@@ -9,8 +9,9 @@ const authentication = require('../middleware/authentication');
 
 router.get('/', authentication, async(req, res) => {
     try {
-        const words = await Vocabulary.find({ _creatorId: req.userData.userId }).select('-__v');
-        res.status(200).json(words);
+        const words = await Vocabulary.find({ _creatorId: req.userData.userId });
+        console.log(words)
+        return res.status(200).json(words);
     } catch (e) {
         res.status(404).json(e);
     }
@@ -22,9 +23,9 @@ router.post('/', authentication, async(req, res) => {
             word: req.body.word,
             translatedWord: req.body.translatedWord,
             examples: req.body.examples,
-            _creator: req.userData.userId
+            _creatorId: req.userData.userId
         });
-        res.status(201).json(await word.save().select('-__v'));
+        res.status(201).json(await word.save());
     } catch (e) {
         res.status(404).json(e);
     }

@@ -10,7 +10,7 @@ const authentication = require('../middleware/authentication');
 router.get('/', authentication, async(req, res) => {
     try {
         const notes = await Note.find({ _creatorId: req.userData.userId }).select('-__v');
-        res.status(200).json(notes);
+        return res.status(200).json(notes);
     } catch (e) {
         res.status(404).json(e);
     }
@@ -23,7 +23,7 @@ router.post('/', authentication, async(req, res) => {
             body: req.body.body,
             _creatorId: req.userData.userId
         });
-        res.status(201).json(await note.save().select('-__v'));
+        return res.status(201).json(await note.save());
     } catch (e) {
         res.status(404).json(e);
     }

@@ -3,27 +3,18 @@
     <v-flex xs6 offset-xs3>
 
       <panel title="My note">
-        <div class="note-item">
-            <h3 class="note-title">Note title</h3>
-          <div class="note-body" v-text="msg"></div>
-          <div class="note-utility">
-            <span class="note-time">28.12.17</span>
-          </div>
-          <div class="note-btns">
-            <v-btn color="primary" :to="'/profile/notes/' + 2">Read more</v-btn>
-            <v-btn color="error">Delete</v-btn>
-          </div>
-        </div>
 
-        <div class="note-item">
-            <h3 class="note-title">Note title</h3>
-          <div class="note-body" v-text="msg"></div>
+        <note-edit slot="action"></note-edit>
+
+        <div class="note-item" v-for="note in notes" :key="note._id">
+            <h3 class="note-title">{{note.title}}</h3>
+          <div class="note-body" v-text="note.body"></div>
           <div class="note-utility">
-            <span class="note-time">28.12.17</span>
+            <span class="note-time">{{note.date | date}}</span>
           </div>
           <div class="note-btns">
-            <v-btn color="primary" :to="'/profile/notes/' + 2">Read more</v-btn>
-            <v-btn color="error">Delete</v-btn>
+            <v-btn color="primary" :to="'/profile/notes/' + note._id">Read more</v-btn>
+            <v-btn color="error" @click="deleteNote(note._id)">Delete</v-btn>
           </div>
         </div>
 
@@ -34,31 +25,47 @@
 </template>
 
 <script>
+  import NotesService from '@/services/NotesService'
+  import NotesEdit from '@/components/profile/editModals/NotesEdit'
+
     export default {
-      data() {
-        return {
-          msg: 'I believe that we are who we choose to be. Nobody’s going to come and save you, you’ve got to save yourself. Nobody’s going to give you anything. You’ve got to go out and fight for it. Nobody knows what you want except for you. And nobody will be as sorry as you if you don’t get it. So don’t give up on your dreams.'
+      methods: {
+        async deleteNote(noteId) {
+          const note = (await NotesService.deleteNote(noteId)).data
+          // need to delete note local
+          const notes = this.notes.filter(note => note._id !== noteId)
+          this.$store.dispatch('setNotes', notes)
         }
+      },
+      components: {
+        noteEdit: NotesEdit
+      },
+      computed: {
+        notes () {
+          return this.$store.getters.notes
+        }
+      },
+      async mounted () {
+        const notes = (await NotesService.getNotes()).data
+        this.$store.dispatch('setNotes', notes)
       }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="sass" scoped>
 
-.note {
-  &-item {
-    background-color: #ccc;
-    padding: 10px 15px 4px;
-    border-radius: 5px;
-    margin: 3px -10px;
-  }
-  &-author {
-    float: right;
-  }
-  &-btns, &-utility {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
+.note 
+  &-item 
+    background-color: #ccc
+    padding: 10px 15px 4px
+    border-radius: 5px
+    margin: 3px -10px
+  
+  &-author 
+    float: right
+  
+  &-btns, &-utility 
+    display: flex
+    justify-content: space-between
+  
 </style>

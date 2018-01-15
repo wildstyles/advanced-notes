@@ -15,7 +15,7 @@ router.post('/', authentication, async(req, res) => {
             _creatorId: req.userData.userId,
             public: req.body.public
         });
-        res.status(201).json(await qoute.save().select('-__v'));
+        res.status(201).json(await qoute.save());
     } catch (e) {
         res.status(500).json(e);
     }
@@ -63,7 +63,7 @@ router.patch('/:qouteId', authentication, async(req, res) => {
     try {
         const updated = await Qoute.findOneAndUpdate({
             _id: id,
-            _creatorId: res.userData.userId
+            _creatorId: req.userData.userId
         }, {
             $set: body
         }, {
@@ -88,7 +88,7 @@ router.delete('/:qouteId', authentication, async(req, res) => {
     try {
         const removed = await Qoute.findOneAndRemove({
             _id: id,
-            _creatorId: res.userData.userId
+            _creatorId: req.userData.userId
         });
         if (!removed) {
             return res.status(404).send({

@@ -30,7 +30,7 @@ router.post('/signup', async(req, res) => {
                 userId: id
             },
             process.env.JWT_KEY, {
-                expiresIn: "1h"
+                expiresIn: "3h"
             });
 
         const newUser = new User({
@@ -39,7 +39,7 @@ router.post('/signup', async(req, res) => {
             password: hash
         })
         newUser.save();
-        return res.header('Authentication', `bearer ${token}`).status(201).json({
+        return res.header('authorization', `bearer ${token}`).status(201).json({
             user: newUser,
             token
         });
@@ -66,7 +66,7 @@ router.post('/signin', async(req, res) => {
                 process.env.JWT_KEY, {
                     expiresIn: "1h"
                 });
-            return res.status(200).header('Authentication', `bearer ${token}`).json({
+            return res.header('authorization', `bearer ${token}`).status(200).json({
                 message: 'Auth successful',
                 user: user[0],
                 token

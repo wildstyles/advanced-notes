@@ -6,11 +6,13 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import Panel from '@/components/globals/Panel'
 import store from '@/store/store'
-
 import App from './App'
 import router from './router'
+import DateFilter from './filters/date'
 
 Vue.component('panel', Panel)
+
+Vue.filter('date', DateFilter)
 
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',

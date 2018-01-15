@@ -25,6 +25,7 @@
 
 <script>
   import AuthenticationService from '@/services/AuthenticationService'
+  import QoutesService from '@/services/QoutesService'
   export default {
     data () {
       return {
@@ -40,10 +41,10 @@
             email: this.email,
             password: this.password
           })
-          console.log(response.data)
+          console.log(response)
           this.$store.dispatch('setToken', response.data.token)
           this.$store.dispatch('setUser', response.data.user)
-          this.$router.push('/profile')
+          this.$router.push('/')
         } catch (error) {
         this.error = error.response.data.error
         console.log(error)

@@ -19,9 +19,9 @@ const Qoute = mongoose.Schema({
     _creatorId: {
         type: mongoose.Schema.Types.ObjectId,
     },
-    sharedPeople: {
-        type: Array
-    },
+    // sharedPeople: {
+    //     type: Array
+    // },
     public: {
         type: Boolean,
         default: false

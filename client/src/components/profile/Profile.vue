@@ -23,6 +23,14 @@
 </template>
 
 
+<script>
+import QoutesService from '@/services/QoutesService'
+    export default {
+
+    }
+
+</script>
+
 <style lang="scss" scoped>
 
 .ggg {
