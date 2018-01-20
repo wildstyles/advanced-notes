@@ -11,6 +11,6 @@ export default {
     return HTTP.post(`notes`, credentials)
   },
   updateNote (note) {
-    return HTTP.patch(`qoutes/${note._id}`, note)
+    return HTTP.patch(`notes/${note._id}`, note)
   }
 }

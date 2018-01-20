@@ -15,7 +15,7 @@ router.post('/', authentication, async(req, res) => {
             _creatorId: req.userData.userId,
             public: req.body.public
         });
-        res.status(201).json(await qoute.save());
+        return res.status(201).json(await qoute.save());
     } catch (e) {
         res.status(500).json(e);
     }

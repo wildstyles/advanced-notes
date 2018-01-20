@@ -4,19 +4,14 @@
 
       <panel title="My diary">
         <div class="diary-item">
-            <input type="text" v-model="diary.title" readonly>
-          <textarea
-           label="Tab"
-           readonly
-           class="test"
-           v-model="diary.body"
-       ></textarea>
+          <div>{{ diaryItem.title }}</div>
+          <div>{{ diaryItem.body }}</div>
           <div class="diary-utility">
-            <span class="diary-time">28.12.17</span>
+            <span class="diary-time">{{diaryItem.date | date}}</span>
           </div>
-          <div class="diary-btns">
-            <v-btn color="primary">Edit</v-btn>
-            <v-btn color="error">Delete</v-btn>
+          <div class="diary-btns" v-if="!publicDiary">
+            <edit-modal slot="action" :item="{ type: 'diaries', item: diaryItem }"></edit-modal>
+            <v-btn color="error" @click="deleteDiary">Delete</v-btn>
           </div>
         </div>
           
@@ -27,26 +22,37 @@
 </template>
 
 <script>
+import DiaryService from '@/services/DiaryService'
+
     export default {
-      data() {
+      props: ['id', 'public'],
+      data () {
         return {
-          diary: {
-            title: 'the title of titem',
-            body: ' Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.',
-            date: '20.17.12'
-          },
-          diary2: {
-            title: 'the title of titem',
-            body: ' Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.',
-            date: '20.17.12'
-          },
+          publicDiary: false
         }
       },
-      mounted() {
-        Array.from(document.getElementsByClassName('test')).forEach(element => {
-          let height = element.scrollHeight
-          element.style.height = height + 'px'
-        })
+      computed: {
+        diaryItem () {
+          return this.$store.getters.diaryItem(this.id)
+        },
+        diary () {
+          return this.$store.getters.diary
+        }
+      },
+      methods: {
+        async deleteDiary () {
+          const deletedDiary = (await DiaryService.deleteDiary(this.id)).data
+          const diary = this.diary.filter(note => note._id !== this.id)
+          this.$store.dispatch('setDiary', diary)
+          this.$router.push('/profile/diaries')
+        }
+      },
+      mounted () {
+        if (this.public) {
+          this.publicDiary = true
+        } else {
+          this.publicDiary = false
+        }
       }
     }
 

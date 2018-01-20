@@ -5,12 +5,14 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import Panel from '@/components/globals/Panel'
+import EditModal from '@/components/profile/editModals/EditModal'
 import store from '@/store/store'
 import App from './App'
 import router from './router'
 import DateFilter from './filters/date'
 
 Vue.component('panel', Panel)
+Vue.component('edit-modal', EditModal)
 
 Vue.filter('date', DateFilter)
 

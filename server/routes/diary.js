@@ -24,7 +24,7 @@ router.post('/', authentication, async(req, res) => {
             _creatorId: req.userData.userId,
             public: req.body.public
         });
-        res.status(201).json(await diaryNote.save().select('-__v'));
+        res.status(201).json(await diaryNote.save());
     } catch (e) {
         res.status(404).json(e);
     }

@@ -3,14 +3,17 @@
     <v-flex xs6 offset-xs3>
 
       <panel title="My diary">
-        <div class="note-item">
-            <h3 class="note-title">diary title</h3>
-          <div class="note-body" v-text="msg"></div>
+
+        <edit-modal slot="action" :item="{ type: 'diaries' }"></edit-modal>
+
+        <div class="note-item" v-for="diary in diaries" :key="diary._id">
+            <h3 class="note-title">{{ diary.title }}</h3>
+          <div class="note-body" v-text="diary.body"></div>
           <div class="note-utility">
-            <span class="note-time">28.12.17</span>
+            <span class="note-time">{{ diary.date | date}}</span>
           </div>
           <div class="note-btns">
-            <v-btn color="primary" :to="'/profile/diaries/' + id">Read more</v-btn>
+            <v-btn color="primary" :to="'/profile/diaries/' + diary._id">Read more</v-btn>
           </div>
         </div>
 
@@ -21,14 +24,19 @@
 </template>
 
 <script>
-    export default {
-      data() {
-        return {
-          id: 3,
-          msg: 'I believe that we are who we choose to be. Nobody’s going to come and save you, you’ve got to save yourself. Nobody’s going to give you anything. You’ve got to go out and fight for it. Nobody knows what you want except for you. And nobody will be as sorry as you if you don’t get it. So don’t give up on your dreams.'
-        }
-      }
+import DiaryService from '@/services/DiaryService'
+export default {
+  computed: {
+    diaries() {
+      return this.$store.getters.diary
     }
+  },
+  async mounted() {
+    const diary = (await DiaryService.getDiary()).data
+    this.$store.dispatch('setDiary', diary)
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>

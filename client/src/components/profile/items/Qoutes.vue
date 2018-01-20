@@ -4,16 +4,16 @@
 
       <panel title="Qoutes">
         
-        <qouteEdit slot="action"></qouteEdit>
+        <edit-modal slot="action" :item="{ type: 'qoutes' }"></edit-modal>
 
         <div class="qoute-item" v-for="qoute in qoutes" :key="qoute._id">
-          <div class="qoute-body" v-readMore:180=" qoute.qoute "></div>
+          <div class="qoute-body">{{ qoute.qoute }}</div>
           <div class="qoute-utility">
             <span class="qoute-time">{{ qoute.date | date}} </span>
             <span class="qoute-author">{{ qoute.author }}</span>
           </div>
           <div class="qoute-btns">
-            <qouteEdit :qoute="qoute" absolute right middle></qouteEdit>
+            <edit-modal :item="{ type: 'qoutes', item: qoute }"></edit-modal>
             <v-btn fab dark color="indigo" small v-if="isCreator !== qoute._creatorId">
               <v-icon dark>add</v-icon>
             </v-btn>
@@ -32,7 +32,6 @@
 
 <script>
 import QoutesService from '@/services/QoutesService'
-import QouteEdit from '@/components/profile/editModals/QoutesEdit'
 
     export default {
       methods: {
@@ -50,9 +49,6 @@ import QouteEdit from '@/components/profile/editModals/QoutesEdit'
         isCreator() {
           return this.$store.getters.user._id
         }
-      },
-      components: {
-        qouteEdit: QouteEdit
       },
       async mounted() {
         const qoutes = (await QoutesService.getQoutes()).data

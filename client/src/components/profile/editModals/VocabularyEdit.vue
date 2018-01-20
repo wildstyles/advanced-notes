@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="noteEdit" max-width="500px">
+  <v-dialog v-model="wordEdit" max-width="500px">
 
     <v-btn accent slot="activator" fab class="green accent-2" small light v-if="!word" left>
       <v-icon>add</v-icon>
@@ -27,7 +27,7 @@
 
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" flat @click.stop="noteEdit=false">Close</v-btn>
+        <v-btn color="primary" flat @click.stop="wordEdit=false">Close</v-btn>
 
         <v-btn color="primary" flat @click.stop="create" v-if="!word">Create</v-btn>
 
@@ -44,7 +44,7 @@ export default {
   props: ['word'],
   data() {
     return {
-      noteEdit: false,
+      wordEdit: false,
       newWord: {
         word: null,
         translatedWord: null,
@@ -54,18 +54,19 @@ export default {
   },
   methods: {
     async create() {
-      const note = (await VocabularyService.createWord(this.newWord)).data
-      this.$store.dispatch('addWord', note)
-      this.noteEdit = false
+      const word = (await VocabularyService.createWord(this.newWord)).data
+      this.$store.dispatch('addVocabulary', word)
+      this.wordEdit = false
     },
     async update() {
-      const qoute = (await NotesService.updateQoute(this.newQoute)).data
-      this.$store.dispatch('updateQoute', qoute)
-      this.qouteEdit = false
+      const word = (await VocabularyService.updateWord(this.newWord)).data
+      this.$store.dispatch('updateVocabulary', word)
+      this.wordEdit = false
     }
   },
   mounted () {
     if (this.word) {
+      console.log(this.word)
       this.newWord = this.word
     }
   }

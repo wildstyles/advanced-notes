@@ -10,7 +10,6 @@ const authentication = require('../middleware/authentication');
 router.get('/', authentication, async(req, res) => {
     try {
         const words = await Vocabulary.find({ _creatorId: req.userData.userId });
-        console.log(words)
         return res.status(200).json(words);
     } catch (e) {
         res.status(404).json(e);

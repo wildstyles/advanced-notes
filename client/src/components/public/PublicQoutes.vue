@@ -2,23 +2,12 @@
   <v-layout column align-center fill-height>
 
     <panel title="Qoutes" class="qoute-panel">
-      <div class="qoute-cart">
+      <div class="qoute-cart" v-for="qoute in qoutes" :key="qoute._id">
         <div class="qoute-body">
           <div class="qoute-descr">
-            Listen to your favorite artists and albums whenever and wherever, online and offline.
-Listen to your favorite artists and albums whenever and wherever, online and offline.
+           {{ qoute.qoute }}
           </div>
-          <div class="qoute-author">Unlimited music now</div>
-        </div>
-        <v-btn fab dark color="indigo">
-          <v-icon dark>add</v-icon>
-        </v-btn>
-      </div>
-
-      <div class="qoute-cart">
-        <div class="qoute-body">
-          <div class="qoute-descr">Listen to your favorite artists and albums whenever and wherever, online and offline.</div>
-          <div class="qoute-author">Unlimited music now</div>
+          <div class="qoute-author">{{ qoute.author }}</div>
         </div>
         <v-btn fab dark color="indigo">
           <v-icon dark>add</v-icon>
@@ -30,6 +19,20 @@ Listen to your favorite artists and albums whenever and wherever, online and off
   </v-layout>
 </template>
 
+
+<script>
+import PublicQoutesService from '@/services/PublicQoutesService'
+export default {
+  data() {
+    return {
+      qoutes: null
+    }
+  },
+  async mounted () {
+    this.qoutes = (await PublicQoutesService.getPublicQoutes()).data
+  }
+}
+</script>
 
 
 

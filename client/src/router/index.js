@@ -74,12 +74,14 @@ export default new Router({
     {
       path: '/profile/notes/:id',
       name: 'noteItem',
-      component: NoteItem
+      component: NoteItem,
+      props: true
     },
     {
       path: '/profile/diaries/:id',
       name: 'diaryItem',
-      component: DiaryItem
+      component: DiaryItem,
+      props: true
     }
   ]
 })

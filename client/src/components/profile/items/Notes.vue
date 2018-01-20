@@ -4,11 +4,11 @@
 
       <panel title="My note">
 
-        <note-edit slot="action"></note-edit>
+        <edit-modal slot="action" :item="{ type: 'notes' }"></edit-modal>
 
         <div class="note-item" v-for="note in notes" :key="note._id">
-            <h3 class="note-title">{{note.title}}</h3>
-          <div class="note-body" v-text="note.body"></div>
+            <h3 class="note-title">{{ note.title }}</h3>
+          <div class="note-body">{{ note.body }}</div>
           <div class="note-utility">
             <span class="note-time">{{note.date | date}}</span>
           </div>
@@ -26,19 +26,14 @@
 
 <script>
   import NotesService from '@/services/NotesService'
-  import NotesEdit from '@/components/profile/editModals/NotesEdit'
 
     export default {
       methods: {
         async deleteNote(noteId) {
           const note = (await NotesService.deleteNote(noteId)).data
-          // need to delete note local
           const notes = this.notes.filter(note => note._id !== noteId)
           this.$store.dispatch('setNotes', notes)
         }
-      },
-      components: {
-        noteEdit: NotesEdit
       },
       computed: {
         notes () {

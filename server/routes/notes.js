@@ -87,7 +87,6 @@ router.delete('/:noteId', authentication, async(req, res) => {
             message: 'the id is invalid'
         });
     }
-
     try {
         const deleted = await Note.findOneAndRemove({_id: id, _creatorId: req.userData.userId });
         if (!deleted) {

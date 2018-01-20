@@ -3,35 +3,39 @@
 
     
       <panel title="Diaries" class="diary-panel">
-        <div class="diary-item">
+        <div class="diary-item" v-for="diary in diaries" :key="diary._id">
+            <div class="diary-title">{{ diary.title }}</div>
             <div class="diary-body">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta.
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta.
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
+                {{ diary.body }}
             </div>
-            <v-btn color="primary" dark>read all</v-btn>
+            <v-btn color="primary" dark @click="publicDiary(diary._id)">read all</v-btn>
         </div>
 
-        <div class="diary-item">
-            <div class="diary-body">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta.
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta.
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa inventore natus aspernatur neque, officiis vel dicta expedita molestiae saepe esse suscipit cupiditate maxime, ea at assumenda impedit est. Quas, dicta
-            </div>
-            <v-btn color="primary" dark>read all</v-btn>
-        </div>
 </panel>
   
 
 
   </v-layout>
 </template>
+
+<script>
+import PublicDiaryService from '@/services/PublicDiaryService'
+export default {
+  data() {
+    return {
+      diaries: null
+    }
+  },
+  methods: {
+    publicDiary (id) {
+      this.$router.push({ name: `diaryItem`, params: { id: id, public: true }})
+    }
+  },
+  async mounted () {
+    this.diaries = (await PublicDiaryService.getPublicDiaries()).data
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 

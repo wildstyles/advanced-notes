@@ -4,13 +4,13 @@ export default {
   getVocabulary (credentials) {
     return HTTP.get(`vocabulary`, credentials)
   },
-  deleteWord (qouteId) {
+  deleteVocabulary (qouteId) {
     return HTTP.delete(`vocabulary/${qouteId}`)
   },
-  createWord (credentials) {
+  createVocabulary (credentials) {
     return HTTP.post(`vocabulary`, credentials)
   },
-  updateWord (credentials) {
+  updateVocabulary (credentials) {
     return HTTP.patch(`vocabulary/${credentials._id}`, credentials)
   }
 }

@@ -6,28 +6,20 @@
         <div class="diary-item">
 
             <div class="diary-title">
-                <label for="title" v-if="isReadOnly">title</label>
-                <input type="text" :class="{ input: isReadOnly }" name="title" v-model="diary.title" :readonly="!isReadOnly">
+                {{ noteItem.title }}
             </div>
             
             <div class="diary-body">
-                <label for="body" v-if="isReadOnly">BOdy</label>
-                <textarea
-                :class="{ input: isReadOnly }"
-           label="Tab"
-           :readonly="!isReadOnly"
-           class="test"
-           v-model="diary.body"
-       ></textarea>
+                {{ noteItem.body }}
             </div>
             
           <div class="diary-utility">
-            <span class="diary-time">28.12.17</span>
+            <span class="diary-time">{{ noteItem.date | date }}</span>
           </div>
           <div class="diary-btns">
-            <v-btn color="primary" @click="isReadOnly = !isReadOnly">Edit</v-btn>
+            <edit-modal slot="action" :item="{ item: noteItem, type: 'notes' }"></edit-modal>
 
-            <v-btn color="error">Delete</v-btn>
+            <v-btn color="error" @click="deleteNote(noteItem._id)">Delete</v-btn>
           </div>
         </div>
           
@@ -38,27 +30,24 @@
 </template>
 
 <script>
+import NotesService from '@/services/NotesService'
     export default {
-      data() {
-        return {
-            isReadOnly: false,
-          diary: {
-            title: 'the title of titem',
-            body: ' Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.',
-            date: '20.17.12'
-          },
-          diary2: {
-            title: 'the title of titem',
-            body: ' Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo, iusto. Quasi, labore? Laboriosam numquam sed quam tempora rem dignissimos. Deserunt veniam omnis debitis delectus voluptatum autem ipsum esse velit enim.',
-            date: '20.17.12'
-          },
+      props: ['id'],
+      computed: {
+        noteItem () {
+          return this.$store.getters.noteItem(this.id)
+        },
+        notes () {
+          return this.$store.getters.notes
         }
       },
-      mounted() {
-        Array.from(document.getElementsByClassName('test')).forEach(element => {
-          let height = element.scrollHeight
-          element.style.height = height + 2 + 'px'
-        })
+      methods: {
+        async deleteNote(noteId) {
+          const note = (await NotesService.deleteNote(noteId)).data
+          const notes = this.notes.filter(note => note._id !== noteId)
+          this.$store.dispatch('setNotes', notes)
+          this.$router.push('/profile/notes')
+        }
       }
     }
 
