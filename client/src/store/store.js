@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import Merge from 'lodash.merge'
 
 Vue.use(Vuex)
 
@@ -36,11 +37,7 @@ export default new Vuex.Store({
       state.qoutes.push(payload)
     },
     updateQoute (state, payload) {
-      const qoute = state.qoutes.find(qoute => qoute._id === payload._id)
-      Vue.set(qoute, 'qoute', payload.qoute)
-      Vue.set(qoute, 'author', payload.author)
-      Vue.set(qoute, 'date', payload.date)
-      Vue.set(qoute, 'public', payload.public)
+      Merge(state.qoutes.find(qoute => qoute._id === payload._id), payload)
     },
 
     setNotes (state, payload) {
@@ -50,10 +47,7 @@ export default new Vuex.Store({
       state.notes.push(payload)
     },
     updateNote (state, payload) {
-      const note = state.notes.find(note => note._id === payload._id)
-      Vue.set(note, 'title', payload.title)
-      Vue.set(note, 'body', payload.body)
-      Vue.set(note, 'date', payload.date)
+      Merge(state.notes.find(note => note._id === payload._id), payload)
     },
 
     setVocabulary (state, payload) {
@@ -63,11 +57,7 @@ export default new Vuex.Store({
       state.vocabulary.push(payload)
     },
     updateVocabulary (state, payload) {
-      const word = state.vocabulary.find(word => word._id === payload._id)
-      Vue.set(word, 'word', payload.word)
-      Vue.set(word, 'translatedWord', payload.translatedWord)
-      Vue.set(word, 'examples', payload.examples)
-      Vue.set(word, 'date', payload.date)
+      Merge(state.vocabulary.find(word => word._id === payload._id), payload)
     },
 
     setDiary (state, payload) {
@@ -77,11 +67,25 @@ export default new Vuex.Store({
       state.diary.push(payload)
     },
     updateDiary (state, payload) {
-      const diaryNote = state.diary.find(diaryNote => diaryNote._id === payload._id)
-      Vue.set(diaryNote, 'title', payload.title)
-      Vue.set(diaryNote, 'body', payload.body)
-      Vue.set(diaryNote, 'date', payload.date)
-      Vue.set(diaryNote, 'public', payload.public)
+      Merge(state.diary.find(diaryNote => diaryNote._id === payload._id), payload)
+    },
+
+    deleteItem (state, payload) {
+      switch (payload.type) {
+        case 'vocabulary':
+          state.vocabulary = state.vocabulary.filter(word => word._id !== payload.id)
+          break
+        case 'qoutes':
+          state.qoutes = state.qoutes.filter(qoute => qoute._id !== payload.id)
+          break
+        case 'diaries':
+          state.diary = state.diary.filter(item => item._id !== payload.id)
+          break
+        case 'notes':
+          state.notes = state.notes.filter(note => note._id !== payload.id)
+          break
+        default: console.log('invalid id of item')
+      }
     }
   },
   actions: {
@@ -90,6 +94,9 @@ export default new Vuex.Store({
     },
     setUser ({commit}, user) {
       commit('setUser', user)
+    },
+    deleteItem ({commit}, payload) {
+      commit('deleteItem', payload)
     },
 
     setQoutes ({commit}, payload) {

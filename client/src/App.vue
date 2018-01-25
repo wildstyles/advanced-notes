@@ -1,7 +1,7 @@
 <template>
 
 <v-app>
-  <my-header/>
+  <my-header class="header-wrapper"/>
   <main>
     
       <router-view/>
@@ -22,9 +22,13 @@ import Header from '@/components/Header'
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="sass">
 
+  main
+    padding: 0 10px
 
+  .header-wrapper
+    margin-bottom: 100px
 
 </style>
 

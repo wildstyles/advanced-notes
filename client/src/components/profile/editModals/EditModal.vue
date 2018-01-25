@@ -5,8 +5,8 @@
       <v-icon>add</v-icon>
     </v-btn>
 
-    <v-btn accent slot="activator" class="cyan accent-2" light v-else>
-      Edit
+    <v-btn slot="activator" color="orange darken-1" flat icon v-else>
+      <v-icon>mode_edit</v-icon>
     </v-btn>
 
     <v-card>
@@ -32,6 +32,7 @@
 
         <v-text-field label="Qoute" type="text" 
         v-model="newItem.qoute" 
+        multi-line
         v-if="currentItem.type === 'qoutes'"></v-text-field>
 
         <v-text-field label="Word" type="text" 
@@ -44,8 +45,15 @@
 
         <v-text-field label="Examples" type="text" 
         v-model="newItem.examples"
+        multi-line
         v-if="currentItem.type === 'vocabulary'"
         ></v-text-field>
+        <!-- <textarea
+          class="vocabulary__examples"
+           placeholder="Examples"
+           v-model="newItem.examples"
+           v-if="currentItem.type === 'vocabulary'"
+       ></textarea> -->
 
         <v-switch :label="`Public ${ currentItem.type }`" v-model="newItem.public" 
         v-if="currentItem.type === 'qoutes' | currentItem.type === 'diaries'"></v-switch>
@@ -61,6 +69,14 @@
     </v-card>
   </v-dialog>
 </template>
+
+
+<style lang="sass" scoped>
+  .vocabulary__examples
+    width: 100%
+    resize: none
+    border-bottom: 1px solid #000
+</style>
 
 
 <script>

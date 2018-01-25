@@ -6,6 +6,8 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 import Panel from '@/components/globals/Panel'
 import EditModal from '@/components/profile/editModals/EditModal'
+import DeleteModal from '@/components/profile/editModals/DeleteModal'
+import SingleItem from '@/components/profile/items/SingleItem'
 import store from '@/store/store'
 import App from './App'
 import router from './router'
@@ -13,6 +15,8 @@ import DateFilter from './filters/date'
 
 Vue.component('panel', Panel)
 Vue.component('edit-modal', EditModal)
+Vue.component('delete-modal', DeleteModal)
+Vue.component('single-item', SingleItem)
 
 Vue.filter('date', DateFilter)
 
