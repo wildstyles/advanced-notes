@@ -3,7 +3,7 @@
 <v-app>
   <my-header class="header-wrapper"/>
   <main>
-    
+      <delete-success-modal></delete-success-modal>
       <router-view/>
     
   </main>

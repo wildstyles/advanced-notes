@@ -73,8 +73,8 @@
           { title: 'Profile', icon: 'timeline', link: '/profile' }
         ],
         itemsP: [
-          { title: 'Qoutes', icon: 'pan_tool', link: '/pqoutes' },
-          { title: 'Diaries', icon: 'face', link: '/pdiaries' },
+          { title: 'Qoutes', icon: 'pan_tool', link: '/public-qoutes' },
+          { title: 'Diaries', icon: 'face', link: '/public-diaries' },
         ]
       }
       },

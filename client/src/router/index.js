@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import store from '@/store/store'
+
 import Hero from '@/components/Index'
 import Signin from '@/components/Signin'
 import Signup from '@/components/Signup'
@@ -13,8 +15,7 @@ import Notes from '@/components/profile/items/Notes'
 import Qoutes from '@/components/profile/items/Qoutes'
 import Vocabulary from '@/components/profile/items/Vocabulary'
 
-import DiaryItem from '@/components/profile/singleItems/DiaryItem'
-import NoteItem from '@/components/profile/singleItems/NoteItem'
+import FullSingleItem from '@/components/profile/singleItems/FullSingleItem'
 
 Vue.use(Router)
 
@@ -37,14 +38,32 @@ export default new Router({
       component: Signup
     },
     {
-      path: '/pqoutes',
-      name: 'pQoutes',
-      component: PublicQoutes
+      path: '/public-qoutes',
+      name: 'publicQoutes',
+      component: PublicQoutes,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'publicQoutes')
+        next()
+      }
     },
     {
-      path: '/pdiaries',
-      name: 'pDiaries',
-      component: PublicDiaries
+      path: '/public-diaries/:id',
+      name: 'publicDiariesItem',
+      component: FullSingleItem,
+      props: true,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'publicDiaries')
+        next()
+      }
+    },
+    {
+      path: '/public-diaries',
+      name: 'publicDiaries',
+      component: PublicDiaries,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'publicDiaries')
+        next()
+      }
     },
     {
       path: '/profile',
@@ -54,34 +73,58 @@ export default new Router({
     {
       path: '/profile/diaries',
       name: 'diaries',
-      component: Diaries
+      component: Diaries,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'diaries')
+        next()
+      }
     },
     {
       path: '/profile/notes',
       name: 'notes',
-      component: Notes
+      component: Notes,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'notes')
+        next()
+      }
     },
     {
       path: '/profile/qoutes',
       name: 'qoutes',
-      component: Qoutes
+      component: Qoutes,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'qoutes')
+        next()
+      }
     },
     {
       path: '/profile/vocabulary',
       name: 'vocabulary',
-      component: Vocabulary
+      component: Vocabulary,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'vocabulary')
+        next()
+      }
     },
     {
       path: '/profile/notes/:id',
       name: 'noteItem',
-      component: NoteItem,
-      props: true
+      component: FullSingleItem,
+      props: true,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'notes')
+        next()
+      }
     },
     {
       path: '/profile/diaries/:id',
       name: 'diaryItem',
-      component: DiaryItem,
-      props: true
+      component: FullSingleItem,
+      props: true,
+      beforeEnter: (to, from, next) => {
+        store.commit('currentPage', 'diaries')
+        next()
+      }
     }
   ]
 })

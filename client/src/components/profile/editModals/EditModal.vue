@@ -1,21 +1,26 @@
 <template>
-  <v-dialog v-model="editModal" max-width="500px">
+  <v-dialog v-model="editModal" max-width="800px">
 
-    <v-btn accent slot="activator" fab class="green accent-2" small light v-if="!item.item" left>
+    <v-btn accent slot="activator" fab class="green accent-2" small light v-if="!item.item && !noItems" left>
       <v-icon>add</v-icon>
     </v-btn>
 
-    <v-btn slot="activator" color="orange darken-1" flat icon v-else>
+    <v-btn slot="activator" color="orange darken-1" flat icon v-if="item.item">
       <v-icon>mode_edit</v-icon>
     </v-btn>
 
+    <v-btn v-if="noItems" slot="activator" color="green accent-2">Создать</v-btn>
+
     <v-card>
-      <v-card-title v-if="!item.item">
-        Create a new {{currentItem.type}} note
-      </v-card-title>
-      <v-card-title v-else>
-        Update created {{currentItem.type}} note
-      </v-card-title>
+
+      <h3 class="edit-modal__header" v-if="!item.item">
+        <span class="edit-modal__header--create">Create</span> a new <b>{{currentItem.type}} note</b>
+      </h3>
+
+      <h3 class="edit-modal__header" v-else>
+        <span class="edit-modal__header--update">Update</span> created <b>{{currentItem.type}} note</b>
+      </h3>
+      
       <v-card-text>
 
         <v-text-field label="Title" type="text"
@@ -24,6 +29,7 @@
 
         <v-text-field label="Body" type="text"
         v-model="newItem.body" 
+        multi-line
         v-if="currentItem.type === 'diaries' | currentItem.type === 'notes'"></v-text-field>
 
         <v-text-field label="Author" type="text" 
@@ -48,23 +54,17 @@
         multi-line
         v-if="currentItem.type === 'vocabulary'"
         ></v-text-field>
-        <!-- <textarea
-          class="vocabulary__examples"
-           placeholder="Examples"
-           v-model="newItem.examples"
-           v-if="currentItem.type === 'vocabulary'"
-       ></textarea> -->
 
         <v-switch :label="`Public ${ currentItem.type }`" v-model="newItem.public" 
         v-if="currentItem.type === 'qoutes' | currentItem.type === 'diaries'"></v-switch>
 
       </v-card-text>
-      <v-card-actions>
-        <v-btn color="primary" flat @click.stop="editModal = false">Close</v-btn>
+      <v-card-actions class="edit-modal__btns">
+        <v-btn color="red darken-4" flat @click.stop="editModal = false" >Close</v-btn>
 
-        <v-btn color="primary" flat @click.stop="create" v-if="!item.item">Create</v-btn>
+        <v-btn color="green" @click.stop="create" v-if="!item.item">Create</v-btn>
 
-        <v-btn color="primary" flat @click.stop="update" v-else>Update</v-btn>
+        <v-btn color="orange darken-1" @click.stop="update" v-else>Update</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -76,6 +76,20 @@
     width: 100%
     resize: none
     border-bottom: 1px solid #000
+
+  .edit-modal
+    &__header
+      text-align: center
+      padding-top: 25px
+      font-weight: 400
+      font-size: 22px
+      &--create
+        color: #4CAF50
+      &--update
+        color: #FFB300
+    &__btns
+      padding-bottom: 30px
+
 </style>
 
 
@@ -86,7 +100,7 @@ import QoutesService from '@/services/QoutesService'
 import VocabularyService from '@/services/VocabularyService'
 
 export default {
-  props: ['item'],
+  props: ['item', 'noItems'],
   data() {
     return {
       editModal: false,

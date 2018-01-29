@@ -11,11 +11,16 @@ export default new Vuex.Store({
   state: {
     token: null,
     user: null,
+
     qoutes: null,
     notes: null,
     vocabulary: null,
     diary: null,
-    isUserLoggedIn: false
+    publicDiary: null,
+
+    isUserLoggedIn: false,
+    additionalModal: false,
+    currentPage: null
   },
   mutations: {
     setToken (state, token) {
@@ -26,8 +31,14 @@ export default new Vuex.Store({
         state.isUserLoggedIn = false
       }
     },
+    setAdditionalModal (state, payload) {
+      state.additionalModal = !payload
+    },
     setUser (state, user) {
       state.user = user
+    },
+    currentPage (state, payload) {
+      state.currentPage = payload
     },
 
     setQoutes (state, payload) {
@@ -69,6 +80,9 @@ export default new Vuex.Store({
     updateDiary (state, payload) {
       Merge(state.diary.find(diaryNote => diaryNote._id === payload._id), payload)
     },
+    setPublicDiary (state, payload) {
+      state.publicDiary = payload
+    },
 
     deleteItem (state, payload) {
       switch (payload.type) {
@@ -107,6 +121,9 @@ export default new Vuex.Store({
     },
     updateQoute ({commit}, payload) {
       commit('updateQoute', payload)
+    },
+    setPublicDiary ({commit}, payload) {
+      commit('setPublicDiary', payload)
     },
 
     setNotes ({commit}, payload) {
@@ -149,24 +166,36 @@ export default new Vuex.Store({
     token (state) {
       return state.token
     },
+    additionalModal (state) {
+      return state.additionalModal
+    },
+    currentPage (state) {
+      return state.currentPage
+    },
 
     qoutes (state) {
-      return state.qoutes
+      return state.qoutes.sort((itemA, itemB) => itemA.date < itemB.date)
     },
     notes (state) {
-      return state.notes
+      return state.notes.sort((itemA, itemB) => itemA.date < itemB.date)
     },
     vocabulary (state) {
-      return state.vocabulary
+      return state.vocabulary.sort((itemA, itemB) => itemA.date < itemB.date)
     },
     diary (state) {
-      return state.diary
+      return state.diary.sort((itemA, itemB) => itemA.date < itemB.date)
     },
     diaryItem (state) {
       return (diaryId) => state.diary.find(diaryNote => diaryNote._id === diaryId)
     },
     noteItem (state) {
       return (noteId) => state.notes.find(note => note._id === noteId)
+    },
+    publicDiaries (state) {
+      return state.publicDiary
+    },
+    publicDiariesItem (state, getters) {
+      return (diaryId) => getters.publicDiaries.find(diary => diary._id === diaryId)
     }
   }
 })

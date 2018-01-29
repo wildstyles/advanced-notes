@@ -4,10 +4,14 @@ import Vue from 'vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+
 import Panel from '@/components/globals/Panel'
 import EditModal from '@/components/profile/editModals/EditModal'
 import DeleteModal from '@/components/profile/editModals/DeleteModal'
+import DeleteSuccessModal from '@/components/profile/editModals/DeleteSuccessModal'
 import SingleItem from '@/components/profile/items/SingleItem'
+import NoItems from '@/components/profile/items/NoItems'
+
 import store from '@/store/store'
 import App from './App'
 import router from './router'
@@ -17,6 +21,8 @@ Vue.component('panel', Panel)
 Vue.component('edit-modal', EditModal)
 Vue.component('delete-modal', DeleteModal)
 Vue.component('single-item', SingleItem)
+Vue.component('delete-success-modal', DeleteSuccessModal)
+Vue.component('no-items', NoItems)
 
 Vue.filter('date', DateFilter)
 
@@ -35,29 +41,29 @@ Vue.config.productionTip = false
 Vue.directive('readMore', {
   bind: function (el, bind, vn) {
     let val_container = bind.value;
-
+console.log(bind.value.length)
     if (bind.value.length > bind.arg) {
 
-      vn.elm.textContent = bind.value.substring(0, bind.arg) + '...'
-      let read_more = document.createElement('a');
-      read_more.href = '#';
-      read_more.text = 'read more';
+      vn.elm.textContent = bind.value.substring(0, bind.arg) + ' ...'
+      // let read_more = document.createElement('a');
+      // read_more.href = '#';
+      // read_more.text = 'read more';
 
-      let read_less = document.createElement('a');
-      read_less.href = '#';
-      read_less.text = 'read less';
+      // let read_less = document.createElement('a');
+      // read_less.href = '#';
+      // read_less.text = 'read less';
 
-      vn.elm.append(' ', read_more);
+      // vn.elm.append(' ', read_more);
 
-      read_more.addEventListener("click", function () {
-        vn.elm.textContent = val_container;
-        vn.elm.append(' ', read_less);
-      });
+      // read_more.addEventListener("click", function () {
+      //   vn.elm.textContent = val_container;
+      //   vn.elm.append(' ', read_less);
+      // });
 
-      read_less.addEventListener("click", function () {
-        vn.elm.textContent = bind.value.substring(0, bind.arg) + '...'
-        vn.elm.append(' ', read_more);
-      });
+      // read_less.addEventListener("click", function () {
+      //   vn.elm.textContent = bind.value.substring(0, bind.arg) + '...'
+      //   vn.elm.append(' ', read_more);
+      // });
 
     } else {
       vn.elm.textContent = bind.value

@@ -1,40 +1,37 @@
 <template>
-  <v-layout column align-center fill-height>
+  <v-layout column>
+    <v-flex xs12 md8 offset-md2 sm10 offset-sm1 lg6 offset-lg3>
 
-    
-      <panel title="Diaries" class="diary-panel">
-        <div class="diary-item" v-for="diary in diaries" :key="diary._id">
-            <div class="diary-title">{{ diary.title }}</div>
-            <div class="diary-body">
-                {{ diary.body }}
-            </div>
-            <v-btn color="primary" dark @click="publicDiary(diary._id)">read all</v-btn>
-        </div>
+      <panel :title="type">
 
-</panel>
-  
+        <single-item :type="type" :items="publicDiaries"></single-item>
 
+        <no-items :type="type" v-if="!publicDiaries.length"></no-items>
 
+      </panel>
+
+    </v-flex>
   </v-layout>
+
 </template>
 
 <script>
-import PublicDiaryService from '@/services/PublicDiaryService'
-export default {
-  data() {
-    return {
-      diaries: null
+  import PublicDiaryService from '@/services/PublicDiaryService'
+
+  export default {
+    computed: {
+      type () {
+        return this.$store.getters.currentPage
+      },
+      publicDiaries () {
+        return this.$store.getters.publicDiaries
+      }
+    },
+    async mounted () {
+      const diaries = (await PublicDiaryService.getPublicDiaries()).data
+      this.$store.dispatch('setPublicDiary', diaries)
     }
-  },
-  methods: {
-    publicDiary (id) {
-      this.$router.push({ name: `diaryItem`, params: { id: id, public: true }})
-    }
-  },
-  async mounted () {
-    this.diaries = (await PublicDiaryService.getPublicDiaries()).data
   }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -70,10 +67,5 @@ $lines-to-show: 5;
     text-overflow: ellipsis;
   }
 }
-
-
-
-
-
 
 </style>
