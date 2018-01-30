@@ -2,6 +2,8 @@
   <v-layout column>
     <v-flex xs12 md8 offset-md2 sm10 offset-sm1 lg6 offset-lg3>
 
+      <breadcrumbs :breadcrumbs="breadcrumbs"></breadcrumbs>
+
       <panel :title="type">
         <div class="item__wrapper">
            <h2 class="item__header">{{ item.title }}</h2>
@@ -27,6 +29,15 @@ import DiaryService from '@/services/DiaryService'
 
     export default {
       props: ['id'],
+      data () {
+      return {
+        breadcrumbs: [
+          { title: 'Profile', link: '/profile' },
+          { title: '', link: '' },
+          { title: '', link: '/profile/diaries/' + this.id }
+        ]
+      }
+    },
       computed: {
         type () {
           return this.$store.getters.currentPage
@@ -45,6 +56,12 @@ import DiaryService from '@/services/DiaryService'
             default: throw new Error('cannot get single item')
           }
         }
+      },
+      mounted () {
+        this.breadcrumbs[1].title = this.type
+        this.breadcrumbs[1].link = `/profile/${this.type}`
+        this.breadcrumbs[2].title = this.item.title
+        this.breadcrumbs[2].link = `profile/${this.type}/${this.id}`
       },
       beforeRouteLeave (to, from, next) {
         this.$store.commit('currentPage', null)

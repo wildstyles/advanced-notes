@@ -6,6 +6,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 
 import Panel from '@/components/globals/Panel'
+import Breadcrumbs from '@/components/globals/Breadcrumbs'
 import EditModal from '@/components/profile/editModals/EditModal'
 import DeleteModal from '@/components/profile/editModals/DeleteModal'
 import DeleteSuccessModal from '@/components/profile/editModals/DeleteSuccessModal'
@@ -23,6 +24,7 @@ Vue.component('delete-modal', DeleteModal)
 Vue.component('single-item', SingleItem)
 Vue.component('delete-success-modal', DeleteSuccessModal)
 Vue.component('no-items', NoItems)
+Vue.component('breadcrumbs', Breadcrumbs)
 
 Vue.filter('date', DateFilter)
 
@@ -78,5 +80,8 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  mounted () {
+    console.log(this.$breadcrumbs)
+  }
 })

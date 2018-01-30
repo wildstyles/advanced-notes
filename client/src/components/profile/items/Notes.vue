@@ -1,6 +1,8 @@
 <template>
   <v-layout column>
     <v-flex xs12 md8 offset-md2 sm10 offset-sm1 lg6 offset-lg3>
+      
+      <breadcrumbs :breadcrumbs="breadcrumbs"></breadcrumbs>
 
       <panel :title="type">
 
@@ -20,6 +22,14 @@
   import NotesService from '@/services/NotesService'
 
   export default {
+    data () {
+      return {
+        breadcrumbs: [
+          { title: 'Profile', link: '/profile' },
+          { title: 'Notes', link: '/profile/notes' }
+        ]
+      }
+    },
     computed: {
       type () {
         return this.$store.getters.currentPage

@@ -68,11 +68,13 @@ export default new Router({
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      meta: { breadcrumb: 'Profile' }
     },
     {
       path: '/profile/diaries',
       name: 'diaries',
+      meta: { breadcrumb: 'Diaries' },
       component: Diaries,
       beforeEnter: (to, from, next) => {
         store.commit('currentPage', 'diaries')
@@ -82,6 +84,7 @@ export default new Router({
     {
       path: '/profile/notes',
       name: 'notes',
+      meta: { breadcrumb: 'Notes' },
       component: Notes,
       beforeEnter: (to, from, next) => {
         store.commit('currentPage', 'notes')
@@ -91,6 +94,7 @@ export default new Router({
     {
       path: '/profile/qoutes',
       name: 'qoutes',
+      meta: { breadcrumb: 'Qoutes' },
       component: Qoutes,
       beforeEnter: (to, from, next) => {
         store.commit('currentPage', 'qoutes')
@@ -100,6 +104,7 @@ export default new Router({
     {
       path: '/profile/vocabulary',
       name: 'vocabulary',
+      meta: { breadcrumb: 'Vocabulary' },
       component: Vocabulary,
       beforeEnter: (to, from, next) => {
         store.commit('currentPage', 'vocabulary')

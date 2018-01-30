@@ -2,7 +2,10 @@
   <v-layout column>
     <v-flex xs12 md8 offset-md2 sm10 offset-sm1 lg6 offset-lg3>
   
+      <breadcrumbs :breadcrumbs="breadcrumbs"></breadcrumbs>
+
       <panel :title="type">
+
         <edit-modal slot="action" :item="{ type }"></edit-modal>
 
         <single-item :type="type" :items="qoutes"></single-item>
@@ -18,6 +21,14 @@
   import QoutesService from '@/services/QoutesService'
 
   export default {
+    data () {
+      return {
+        breadcrumbs: [
+          { title: 'Profile', link: '/profile' },
+          { title: 'Qoutes', link: '/profile/qoutes' }
+        ]
+      }
+    },
     computed: {
       qoutes () {
         return this.$store.getters.qoutes
