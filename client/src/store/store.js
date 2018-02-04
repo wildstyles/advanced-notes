@@ -20,7 +20,8 @@ export default new Vuex.Store({
 
     isUserLoggedIn: false,
     additionalModal: false,
-    currentPage: null
+    currentPage: null,
+    error: ''
   },
   mutations: {
     setToken (state, token) {

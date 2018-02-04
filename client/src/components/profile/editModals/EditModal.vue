@@ -20,37 +20,61 @@
       <h3 class="edit-modal__header" v-else>
         <span class="edit-modal__header--update">Update</span> created <b>{{currentItem.type}} note</b>
       </h3>
+
+      <div class="edit-modal__error-wrapper">
+      <transition enter-active-class="animated zoomIn" leave-active-class="animated zoomOut">
+          <div v-show="errors.any()">Старичок, нада заполнить все поля!</div>
+      </transition>
+      </div>
       
+
       <v-card-text>
 
         <v-text-field label="Title" type="text"
-         v-model="newItem.title" 
+         v-model="newItem.title"
+         v-validate ="'required'"
+         name="title"
+         data-vv-delay="1000"
          v-if="currentItem.type === 'diaries' | currentItem.type === 'notes'"></v-text-field>
 
         <v-text-field label="Body" type="text"
         v-model="newItem.body" 
         multi-line
+        name="body"
+        data-vv-delay="1000"
+        v-validate ="'required'"
         v-if="currentItem.type === 'diaries' | currentItem.type === 'notes'"></v-text-field>
+  
 
         <v-text-field label="Author" type="text" 
-        v-model="newItem.author" 
+        v-model="newItem.author"
+        v-validate="'required'"
+        data-vv-delay="1000"
         v-if="currentItem.type === 'qoutes'"></v-text-field>
 
         <v-text-field label="Qoute" type="text" 
-        v-model="newItem.qoute" 
+        v-model="newItem.qoute"
+        v-validate="'required'"
+        data-vv-delay="1000"
         multi-line
         v-if="currentItem.type === 'qoutes'"></v-text-field>
 
         <v-text-field label="Word" type="text" 
-        v-model="newItem.word" 
+        v-model="newItem.word"
+        v-validate="'required'" 
+        data-vv-delay="1000"
         v-if="currentItem.type === 'vocabulary'"></v-text-field>
 
         <v-text-field label="Translated Word" type="text" 
-        v-model="newItem.translatedWord" 
+        v-model="newItem.translatedWord"
+        v-validate="'required'"
+        data-vv-delay="1000"
         v-if="currentItem.type === 'vocabulary'"></v-text-field>
 
         <v-text-field label="Examples" type="text" 
         v-model="newItem.examples"
+        v-validate="'required'"
+        data-vv-delay="1000"
         multi-line
         v-if="currentItem.type === 'vocabulary'"
         ></v-text-field>
@@ -72,12 +96,20 @@
 
 
 <style lang="sass" scoped>
+
   .vocabulary__examples
     width: 100%
     resize: none
     border-bottom: 1px solid #000
 
   .edit-modal
+    &__error-wrapper
+      margin-top: 7px
+      height: 30px
+      text-align: center
+      > div
+        font-weight: 500
+        color: #E53935
     &__header
       text-align: center
       padding-top: 25px
@@ -126,6 +158,19 @@ export default {
       Object.keys(this.newItem).forEach(i => this.newItem[i] = null)
     },
     async create () {
+      this.$validator.validateAll().then((result) => {
+              if (result) {
+                console.log('All is well')
+                this.createe()
+              } else {
+                console.log('error')
+                return false
+                const el = document.getElementsByClassName('edit-modal__error-wrapper')
+                el.className += 'shaking'
+              }
+            });
+    },  
+    async createe () {
         switch (this.currentItem.type) {
             case 'vocabulary':
                 const word = (await VocabularyService.createVocabulary(this.newItem)).data

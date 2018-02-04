@@ -15,7 +15,38 @@
       </panel>
     </v-flex>
   </v-layout>
+  
 </template>
+
+<style  scoped>
+
+  .test {
+    display: flex;
+  }
+
+  .qq {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: red;
+    position: relative;
+    top: 50px;
+    left: 10px;
+  }
+
+  .pop {
+   width: 120px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 70px;
+   background-color: red;
+   border-radius: 50% 30%
+  }
+
+  
+</style>
+
 
 
 <script>

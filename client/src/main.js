@@ -4,6 +4,7 @@ import Vue from 'vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+import VeeValidate from 'vee-validate'
 
 import Panel from '@/components/globals/Panel'
 import Breadcrumbs from '@/components/globals/Breadcrumbs'
@@ -27,6 +28,7 @@ Vue.component('no-items', NoItems)
 Vue.component('breadcrumbs', Breadcrumbs)
 
 Vue.filter('date', DateFilter)
+Vue.use(VeeValidate)
 
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',
